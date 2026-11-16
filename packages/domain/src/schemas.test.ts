@@ -55,6 +55,19 @@ describe('patientProfileSchema', () => {
     });
   });
 
+  it('accepts real-world names and rejects markup', () => {
+    for (const family of ["O'Brien", 'Müller-Lüdenscheidt', 'de la Cruz', 'Nguyễn', 'St. John']) {
+      expect(patientProfileSchema.safeParse({ name: { given: 'A', family } }).success, family).toBe(
+        true,
+      );
+    }
+    for (const family of ['<speak>', 'Max{x}', '-Max', 'Robert"); DROP']) {
+      expect(patientProfileSchema.safeParse({ name: { given: 'A', family } }).success, family).toBe(
+        false,
+      );
+    }
+  });
+
   it('rejects blank names and unknown insurance types', () => {
     expect(patientProfileSchema.safeParse({ name: { given: ' ', family: 'X' } }).success).toBe(
       false,

@@ -17,6 +17,7 @@ export {
   isoDateSchema,
   isoInstantSchema,
   isoWeekdaySchema,
+  namePartSchema,
   patientProfileSchema,
   practiceSchema,
   slotSchema,

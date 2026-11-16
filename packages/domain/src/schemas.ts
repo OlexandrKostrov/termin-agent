@@ -27,6 +27,15 @@ export const bundeslandSchema = z.enum(BUNDESLAENDER);
 
 const nonEmpty = (max: number) => z.string().trim().min(1).max(max);
 
+/**
+ * Person-name part: letters (any script, with diacritics), spaces, and . ' -
+ * Names end up in TTS input, so markup characters are rejected outright.
+ */
+export const namePartSchema = nonEmpty(100).regex(
+  /^[\p{L}\p{M}][\p{L}\p{M} .'-]*$/u,
+  "Names may contain letters, spaces, and . ' -",
+);
+
 // ── Principal (the person we call for) ─────────────────────────────────────
 
 export const insuranceTypeSchema = z.enum(['gesetzlich', 'privat']);
@@ -37,7 +46,7 @@ export type InsuranceType = z.infer<typeof insuranceTypeSchema>;
  * a missing field is never filled in. The agent says it doesn't know.
  */
 export const patientProfileSchema = z.object({
-  name: z.object({ given: nonEmpty(100), family: nonEmpty(100) }),
+  name: z.object({ given: namePartSchema, family: namePartSchema }),
   birthDate: isoDateSchema.optional(),
   insurance: z
     .object({
