@@ -38,6 +38,9 @@ importers:
 
   packages/domain:
     dependencies:
+      '@termin/time-de':
+        specifier: workspace:*
+        version: link:../time-de
       zod:
         specifier: ^4.6.7
         version: 4.6.7
