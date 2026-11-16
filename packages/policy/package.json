@@ -1,0 +1,24 @@
+{
+  "name": "@termin/policy",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Deterministic guards: slot constraints, personal-data guard, AI disclosure, outbound allow-list.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@termin/domain": "workspace:*",
+    "@termin/time-de": "workspace:*",
+    "luxon": "^3.7.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.6",
+    "fast-check": "^4.10.2"
+  }
+}

@@ -63,6 +63,9 @@ importers:
       '@types/luxon':
         specifier: ^3.7.6
         version: 3.7.6
+      fast-check:
+        specifier: ^4.10.2
+        version: 4.10.2
 
   packages/time-de:
     dependencies:
