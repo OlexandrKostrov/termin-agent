@@ -1,0 +1,20 @@
+{
+  "name": "@termin/time-de",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Europe/Berlin date resolution, German public holidays, spoken German dates/times and spelling alphabets.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "luxon": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.6"
+  }
+}
