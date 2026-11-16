@@ -8,7 +8,7 @@ You write the request in English:
 
 The agent calls the practice and negotiates in German. It returns a structured result (booked slot / no slot / call back later / voicemail / refused / dropped) and the transcript.
 
-> **Status:** early development. M0 (scaffold) and M1 (domain, German time utilities, policy guard) are in progress. See [Roadmap](#roadmap).
+> **Status:** early development. M0 (scaffold) and M1 (domain, German time utilities, policy guards) are done; there is no LLM or telephony yet. See [Roadmap](#roadmap).
 > The MVP never calls third parties. It calls only a simulated practice and allow-listed numbers that belong to the author.
 
 ## Why this is interesting
@@ -43,15 +43,26 @@ pnpm test:coverage
 
 ## Roadmap
 
-| Milestone | Scope                                                                    | Status      |
-| --------- | ------------------------------------------------------------------------ | ----------- |
-| M0        | Workspace, tooling, CI, docs                                             | in progress |
-| M1        | Domain schemas, state machines, `time-de`, `policy`                      | in progress |
-| M2        | English request → constraints (LLM, structured output)                   | planned     |
-| M3        | Text-mode agent vs. scripted practice, all MVP branches                  | planned     |
-| M4        | LLM receptionist simulator + eval harness + `EVALS.md`                   | planned     |
-| M5        | Voice pipeline (telephony, streaming STT/TTS), API + PostgreSQL          | planned     |
-| M6        | CLI/API polish, second LLM provider, demo recording, cost/latency report | planned     |
+| Milestone | Scope                                                                    | Status  |
+| --------- | ------------------------------------------------------------------------ | ------- |
+| M0        | Workspace, tooling, CI, docs                                             | done    |
+| M1        | Domain schemas, state machines, `time-de`, `policy`                      | done    |
+| M2        | English request → constraints (LLM, structured output)                   | planned |
+| M3        | Text-mode agent vs. scripted practice, all MVP branches                  | planned |
+| M4        | LLM receptionist simulator + eval harness + `EVALS.md`                   | planned |
+| M5        | Voice pipeline (telephony, streaming STT/TTS), API + PostgreSQL          | planned |
+| M6        | CLI/API polish, second LLM provider, demo recording, cost/latency report | planned |
+
+## What M1 guarantees (and how it is tested)
+
+| Guarantee                                            | Test                                                                    |
+| ---------------------------------------------------- | ----------------------------------------------------------------------- |
+| A slot is accepted iff it satisfies every constraint | fast-check vs. an independent `Intl`-based oracle, random offsets + DST |
+| Personal data is never invented                      | property: every released value appears verbatim in the user's input     |
+| Disclosure is first and exact                        | unit tests on the fixed template and transcript check                   |
+| Only allow-listed numbers are dialled                | property: `ok` iff the number is on the list; exact E.164 only          |
+| State machines match their spec                      | every (from, to) pair vs. an independent table; reachability; walks     |
+| German times round-trip                              | property: `parseGermanTime(speakTime(h, m))` recovers `h:m`             |
 
 ## Design
 

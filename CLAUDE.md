@@ -56,9 +56,16 @@ Planned (not yet present): `packages/llm` (provider adapter, Anthropic first, Op
 ## Milestone status
 
 - [x] M0: scaffold, tooling, CI, docs
-- [ ] M1: domain schemas, request + call state machines, `time-de`, `policy` (in progress)
+- [x] M1: domain schemas, request + call state machines, `time-de`, `policy`
 - [ ] M2: English request → `Constraints` (LLM structured output) + confirmation echo
 - [ ] M3: text-mode agent vs. scripted practice, all MVP branches
 - [ ] M4: LLM receptionist simulator, eval harness, `EVALS.md` with hard-rule gates
 - [ ] M5: voice pipeline, API, PostgreSQL via Drizzle
 - [ ] M6: polish, OpenAI adapter + side-by-side evals, demo recording
+
+## Open items carried into M2+
+
+- `visit.detail` is free text in the user's language (English). Before the agent speaks it, M2 must produce a German rendering that the user confirms (store it as its own field). The agent must never translate it live.
+- `parseGermanTime` flags 12-hour colloquial times as `ambiguous`. The agent (M3) must read back the slot in 24-hour form in the `confirming` phase before accepting.
+- Holidays that apply only in parts of a state (Fronleichnam in parts of SN/TH, Mariä Himmelfahrt in BY) are not modelled; the practice's answer wins.
+- Retries after `callback` create a new request linked to the old one (the request machine's terminals stay terminal).
